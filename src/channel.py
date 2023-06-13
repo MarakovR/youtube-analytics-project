@@ -50,6 +50,7 @@ class Channel:
         return
 
     def to_json(self, name_file):
+        """ Записывает данные в json файл """
         chanel_info = {"id": self.id,
                        "title": self.title,
                        "description": self.description,
