@@ -8,15 +8,21 @@ class Video:
 
     def __init__(self, video_id):
         self.video_id = video_id
-        self.video_response = self.youtube.videos().list(part='snippet,statistics,contentDetails,topicDetails',
-                                                         id=self.video_id).execute()
-        self.video_title: str = self.video_response['items'][0]['snippet']['title']
-        self.url = f'https://www.youtube.com/watch?v={self.video_id}'
-        self.view_count: int = self.video_response['items'][0]['statistics']['viewCount']
-        self.like_count: int = self.video_response['items'][0]['statistics']['likeCount']
+        try:
+            self.video_response = self.youtube.videos().list(part='snippet,statistics,contentDetails,topicDetails',
+                                                             id=self.video_id).execute()
+            self.title: str = self.video_response['items'][0]['snippet']['title']
+            self.url = f'https://www.youtube.com/watch?v={self.video_id}'
+            self.view_count: int = self.video_response['items'][0]['statistics']['viewCount']
+            self.like_count: int = self.video_response['items'][0]['statistics']['likeCount']
+
+        except IndexError:
+            self.title = None
+            self.like_count = None
+            print('Данного ID не существует')
 
     def __str__(self):
-        return f'{self.video_title}'
+        return f'{self.title}'
 
 
 class PLVideo(Video):
